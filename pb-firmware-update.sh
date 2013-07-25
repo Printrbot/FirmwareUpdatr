@@ -50,13 +50,13 @@ else
 		URL='https://raw.github.com/PxT/Marlin/master/PBJuniorFirmware.cpp.hex'
 		;;
 	LC/Original)
-		URL=LC URL
+		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
 		;;
 	Plus)
-		URL=Plus URL
+		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
 		;;
 	Simple)
-		URL=Simple URL
+		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
 		;;
 	*)
 		$CDL msgbox --icon hazard --text "Error" --informative-text "An unexpected error occurred" --button1 "Quit"
