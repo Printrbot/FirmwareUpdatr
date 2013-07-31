@@ -47,16 +47,16 @@ else
 
 	case ${modelResponse[2]} in
 	Junior)
-		URL='https://raw.github.com/PxT/Marlin/master/PBJuniorFirmware.cpp.hex'
+		URL='https://raw.github.com/Printrbot/Printrbot-Junior-Firmware/master/Jr_FW.cpp.hex'
 		;;
 	LC/Original)
-		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
+		URL='https://raw.github.com/Printrbot/Printrbot-LC-Firmware/master/LC_FW.cpp.hex'
 		;;
 	Plus)
-		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
+		URL='https://raw.github.com/Printrbot/Printrbot-Plus-Firmware/master/Plus+_FW.cpp.hex'
 		;;
 	Simple)
-		URL='https://raw.github.com/PxT/Marlin/master/MarlinProductionBolts.cpp.hex'
+		URL='https://raw.github.com/Printrbot/Printrbot-Simple-Firmware/master/Simple_FW.cpp.hex'
 		;;
 	*)
 		$CDL msgbox --icon hazard --text "Error" --informative-text "An unexpected error occurred" --button1 "Quit"
