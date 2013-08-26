@@ -16,7 +16,7 @@
 #
 
 PATH_TO_DFU=./dfu/
-VERSION="1.03"
+VERSION="1.04"
 
 /usr/local/bin/platypus -P 'Printrbot Firmware Updater.platypus' -y -f $PATH_TO_DFU -V $VERSION 'Printrbot Firmware Updater.app'
 
