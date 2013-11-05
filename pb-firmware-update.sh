@@ -138,6 +138,8 @@ if [ $? -ne 0 ]; then
 	$CDL msgbox --icon hazard --text "Error" --informative-text "$response" --button1 "Quit"
 	exit
 fi
+echo "$response"
+
 echo "PROGRESS:75"  # Platypus
 echo "Flashing new firmware"
 response=`./dfu/bin/dfu-programmer at90usb1286 flash "$DL" 2>&1`
@@ -145,6 +147,7 @@ if [ $? -ne 0 ]; then
 	$CDL msgbox --icon hazard --text "Error" --informative-text "$response" --button1 "Quit"
 	exit
 fi
+echo "$response"
 
 echo "Done"
 echo "PROGRESS:100"  # Platypus

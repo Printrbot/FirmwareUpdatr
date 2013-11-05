@@ -1,7 +1,7 @@
 /*
  * dfu-programmer
  *
- * $Id: main.c 93 2010-02-23 10:17:40Z schmidtw $
+ * $Id: main.c 158 2013-05-10 13:56:01Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,9 @@ int main( int argc, char **argv )
 #endif
     }
 
-    device = dfu_device_init( args.vendor_id, args.chip_id, &dfu_device,
+    device = dfu_device_init( args.vendor_id, args.chip_id,
+                              args.bus_id, args.device_address,
+                              &dfu_device,
                               args.initial_abort,
                               args.honor_interfaceclass );
 
@@ -109,7 +111,12 @@ error:
 #else
         rv = usb_release_interface( dfu_device.handle, dfu_device.interface );
 #endif
-        if( 0 != rv ) {
+        /* The RESET command sometimes causes the usb_release_interface command to fail.
+           It is not obvious why this happens but it may be a glitch due to the hardware
+           reset in the attached device. In any event, since reset causes a USB detach
+           this should not matter, so there is no point in raising an alarm.
+        */
+        if( 0 != rv && com_reset != args.command ) {
             fprintf( stderr, "%s: failed to release interface %d.\n",
                              progname, dfu_device.interface );
             retval = 1;
@@ -126,7 +133,7 @@ error:
         }
 #endif
     }
-    
+
 #ifdef HAVE_LIBUSB_1_0
     libusb_exit(usbcontext);
 #endif

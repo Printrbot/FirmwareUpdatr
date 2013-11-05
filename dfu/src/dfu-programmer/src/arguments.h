@@ -1,7 +1,7 @@
 /*
  * dfu-programmer
  *
- * $Id: arguments.h 94 2010-04-09 05:46:38Z schmidtw $
+ * $Id: arguments.h 158 2013-05-10 13:56:01Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,8 @@ enum targets_enum { tar_at89c51snd1c,
                     tar_atmega32u4,
                     tar_atmega32u2,
                     tar_atmega16u4,
+                    tar_atmega16u2,
+                    tar_atmega8u2,
                     tar_at32uc3b064,
                     tar_at32uc3b164,
                     tar_at32uc3b0128,
@@ -79,11 +81,43 @@ enum targets_enum { tar_at89c51snd1c,
                     tar_at32uc3a3128s,
                     tar_at32uc3a3256,
                     tar_at32uc3a3256s,
+                    tar_at32uc3a4256s,
+                    tar_at32uc3c064,
+                    tar_at32uc3c0128,
+                    tar_at32uc3c0256,
+                    tar_at32uc3c0512,
+                    tar_at32uc3c164,
+                    tar_at32uc3c1128,
+                    tar_at32uc3c1256,
+                    tar_at32uc3c1512,
+                    tar_at32uc3c264,
+                    tar_at32uc3c2128,
+                    tar_at32uc3c2256,
+                    tar_at32uc3c2512,
+                    tar_atxmega64a1u,
+                    tar_atxmega128a1u,
+                    tar_atxmega64a3u,
+                    tar_atxmega128a3u,
+                    tar_atxmega192a3u,
+                    tar_atxmega256a3u,
+                    tar_atxmega16a4u,
+                    tar_atxmega32a4u,
+                    tar_atxmega64a4u,
+                    tar_atxmega128a4u,
+                    tar_atxmega256a3bu,
+                    tar_atxmega64b1,
+                    tar_atxmega128b1,
+                    tar_atxmega64b3,
+                    tar_atxmega128b3,
+                    tar_atxmega64c3,
+                    tar_atxmega128c3,
+                    tar_atxmega256c3,
+                    tar_atxmega384c3,
                     tar_none };
 
 enum commands_enum { com_none, com_erase, com_flash, com_user, com_eflash,
                      com_configure, com_get, com_getfuse, com_dump, com_edump,
-                     com_udump, com_setfuse,
+                     com_udump, com_setfuse, com_setsecure,
                      com_start_app, com_version, com_reset };
 
 enum configure_enum { conf_BSB = ATMEL_SET_CONFIG_BSB,
@@ -109,6 +143,8 @@ struct programmer_arguments {
     enum targets_enum target;
     uint16_t vendor_id;
     uint16_t chip_id;
+    uint16_t bus_id;            /* if non-zero, use bus_id and device_address */
+    uint16_t device_address;        /* to identify the specific target device. */
     atmel_device_class_t device_type;
     char device_type_string[DEVICE_TYPE_STRING_MAX_LENGTH];
     uint32_t memory_address_top;        /* the maximum memory address */
@@ -151,6 +187,9 @@ struct programmer_arguments {
             int32_t suppress_validation;
             char original_first_char;
             char *file;
+            int16_t *serial_data; /* serial number or other device specific bytes */
+            size_t serial_offset; /* where the serial_data should be written */
+            size_t serial_length; /* how many bytes to write */
         } com_flash_data;
 
         struct com_get_struct {

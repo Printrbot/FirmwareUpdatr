@@ -42,7 +42,31 @@ Atmel chips with USB support.
 %{_datadir}/hal/fdi/information/20thirdparty/10-dfu-programmer.fdi
 
 %changelog
-
+Thu Jul 18 2013 Simon Large - 0.6.2-1
+- Ignore false "No device found" errors.
+- Use the correct linker argument to specify the path for libusb-1.0.
+* Thu Apr 04 2013 Simon Large - 0.6.1-1
+- Added support for specifying a USB bus and address
+- Added support for device serialization
+- Fix packaging problem when dist built on a Windows machine.
+- Clarified some error messages
+* Tue Jan 29 2013 Simon Large - 0.6.0-1
+- Added support for xmega chips currently supported by FLIP
+- Do not attempt eeprom operations on devices without eeprom
+- Allow setting the security bit on AVR32
+- Add HTML help file for Windows users
+- Added new commands --version, --help, --targets
+- Improved built in help text
+- Improved several error messages
+* Sat Dec 22 2012 Simon Large - 0.5.5-1
+- added atmega16u2 support
+- fixed operation of reset command
+- more reliable autoconf operation
+* Sun Jan 16 2011 Weston Schmidt <weston_schmidt at alumni.purdue.edu> - 0.5.4-1
+- added atmega8u2 support
+* Sun Jan 16 2011 Weston Schmidt <weston_schmidt at alumni.purdue.edu> - 0.5.3-1
+- added at32uc3c* support
+- fixed a number of defects
 * Sat Aug 22 2009 Weston Schmidt <weston_schmidt at alumni.purdue.edu> - 0.5.2-1
 - added ability to read from STDIN
 - added ability to configure AVR32 fuses

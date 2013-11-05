@@ -13,7 +13,7 @@
  * http://www.sbprojects.com
  * In the "Knowledge Base" section.
  *
- * $Id: intel_hex.c 80 2009-01-19 07:31:33Z schmidtw $
+ * $Id: intel_hex.c 159 2013-05-10 14:13:14Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,6 @@ static int intel_validate_checksum( struct intel_record *record )
     return (0xff & checksum);
 }
 
-
 static int intel_validate_line( struct intel_record *record )
 {
     /* Validate the checksum */
@@ -122,19 +121,20 @@ static int intel_validate_line( struct intel_record *record )
     return 0;
 }
 
-
 static void intel_process_address( struct intel_record *record )
 {
     switch( record->type ) {
         case 2:
             /* 0x1238 -> 0x00012380 */
-            record->address = (record->data[0] << 8) | record->data[1];
+            record->address = ((0xff & record->data[0]) << 8);
+            record->address |= (0xff & record->data[1]);
             record->address *= 16;
             break;
 
         case 4:
             /* 0x1234 -> 0x12340000 */
-            record->address = (record->data[0] << 8) | record->data[1];
+            record->address = ((0xff & record->data[0]) << 8);
+            record->address |= (0xff & record->data[1]);
             record->address <<= 16;
             break;
 
@@ -147,7 +147,6 @@ static void intel_process_address( struct intel_record *record )
             break;
     }
 }
-
 
 static int intel_read_data( FILE *fp, struct intel_record *record )
 {
@@ -195,7 +194,6 @@ static int intel_read_data( FILE *fp, struct intel_record *record )
 
     return 0;
 }
-
 
 static int intel_parse_line( FILE *fp, struct intel_record *record )
 {
@@ -293,7 +291,6 @@ int16_t *intel_hex_to_buffer( char *filename, int max_size, int *usage )
     failure = 0;
 
 error:
-
     if( NULL != fp ) {
         fclose( fp );
         fp = NULL;

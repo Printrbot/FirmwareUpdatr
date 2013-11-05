@@ -1,7 +1,7 @@
 /*
  * dfu-programmer
  *
- * $Id: dfu.h 93 2010-02-23 10:17:40Z schmidtw $
+ * $Id: dfu.h 148 2013-02-21 22:30:46Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,6 +98,8 @@ struct usb_device
 #endif
                      *dfu_device_init( const uint32_t vendor,
                                        const uint32_t product,
+                                       const uint32_t bus,
+                                       const uint32_t dev_addr,
                                        dfu_device_t *device,
                                        const dfu_bool initial_abort,
                                        const dfu_bool honor_interfaceclass );

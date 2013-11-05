@@ -1,7 +1,7 @@
 /*
  * dfu-programmer
  *
- * $Id: atmel.h 85 2009-04-30 09:46:27Z schmidtw $
+ * $Id: atmel.h 159 2013-05-10 14:13:14Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,10 @@
 #define ATMEL_SET_CONFIG_EB     3
 #define ATMEL_SET_CONFIG_HSB    4
 
+#define ATMEL_SECURE_OFF        0       // Security bit is cleared
+#define ATMEL_SECURE_ON         1       // Security bit is set
+#define ATMEL_SECURE_MAYBE      2       // Call to check security bit failed
+
 /* All values are valid if in the range of 0-255, invalid otherwise */
 typedef struct {
     int16_t bootloaderVersion;  // Bootloader Version
@@ -68,16 +72,21 @@ typedef struct {
 
 int32_t atmel_read_config( dfu_device_t *device,
                            atmel_device_info_t *info );
+
 int32_t atmel_read_fuses( dfu_device_t *device,
                           atmel_avr32_fuses_t * info );
+
 int32_t atmel_erase_flash( dfu_device_t *device,
                            const uint8_t mode );
+
 int32_t atmel_set_fuse( dfu_device_t *device,
                           const uint8_t property,
                           const uint32_t value );
+
 int32_t atmel_set_config( dfu_device_t *device,
                           const uint8_t property,
                           const uint8_t value );
+
 int32_t atmel_read_flash( dfu_device_t *device,
                           const uint32_t start,
                           const uint32_t end,
@@ -85,19 +94,28 @@ int32_t atmel_read_flash( dfu_device_t *device,
                           const size_t buffer_len,
                           const dfu_bool eeprom,
                           const dfu_bool user );
+
 int32_t atmel_blank_check( dfu_device_t *device,
                            const uint32_t start,
                            const uint32_t end );
+
 int32_t atmel_reset( dfu_device_t *device );
+
+int32_t atmel_secure( dfu_device_t *device );
+
+int32_t atmel_getsecure( dfu_device_t *device );
+
 int32_t atmel_flash( dfu_device_t *device,
                      int16_t *buffer,
                      const uint32_t start,
                      const uint32_t end,
                      const size_t flash_page_size,
                      const dfu_bool eeprom );
+
 int32_t atmel_user( dfu_device_t *device,
                     int16_t *buffer,
                     const uint32_t end );
+
 int32_t atmel_start_app( dfu_device_t *device );
 
 void atmel_print_device_info( FILE *stream, atmel_device_info_t *info );

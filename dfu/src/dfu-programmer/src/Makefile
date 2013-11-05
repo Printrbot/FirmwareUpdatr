@@ -34,13 +34,14 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = dfu-programmer$(EXEEXT)
 subdir = src
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
@@ -50,7 +51,7 @@ am_dfu_programmer_OBJECTS = main.$(OBJEXT) arguments.$(OBJEXT) \
 	intel_hex.$(OBJEXT) util.$(OBJEXT)
 dfu_programmer_OBJECTS = $(am_dfu_programmer_OBJECTS)
 dfu_programmer_LDADD = $(LDADD)
-DEFAULT_INCLUDES = -I. -I$(top_builddir)
+DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/m4/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
@@ -63,15 +64,15 @@ DIST_SOURCES = $(dfu_programmer_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run aclocal-1.11
-AMTAR = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run tar
-AUTOCONF = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run automake-1.11
+ACLOCAL = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run aclocal-1.11
+AMTAR = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run tar
+AUTOCONF = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoconf
+AUTOHEADER = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoheader
+AUTOMAKE = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run automake-1.11
 AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -I/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
+CFLAGS = -m32 -mmacosx-version-min=10.5 -I/Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
 CPP = 
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -88,35 +89,30 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS =  -L/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/lib -lusb-1.0
+LDFLAGS = -L/Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/lib/
 LIBOBJS = 
-LIBS = 
-LIBUSB_1_0_CFLAGS = -I/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
-LIBUSB_1_0_LIBS = -L/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/lib -lusb-1.0
+LIBS =  -lusb-1.0
 LTLIBOBJS = 
 MAINT = #
-MAKEINFO = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run makeinfo
+MAKEINFO = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run makeinfo
 MKDIR_P = ../m4/install-sh -c -d
 OBJEXT = o
 PACKAGE = dfu-programmer
 PACKAGE_BUGREPORT = 
 PACKAGE_NAME = dfu-programmer
-PACKAGE_STRING = dfu-programmer 0.5.2
+PACKAGE_STRING = dfu-programmer 0.6.2
 PACKAGE_TARNAME = dfu-programmer
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.5.2
+PACKAGE_VERSION = 0.6.2
 PATH_SEPARATOR = :
-PKG_CONFIG = /usr/local/bin/pkg-config
-PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = 
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
-VERSION = 0.5.2
-abs_builddir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/src
-abs_srcdir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/src
-abs_top_builddir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
-abs_top_srcdir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+VERSION = 0.6.2
+abs_builddir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/src
+abs_srcdir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/src
+abs_top_builddir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+abs_top_srcdir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -135,7 +131,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/install-sh
+install_sh = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -144,7 +140,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(top_builddir)/m4/install-sh -c -d
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu
+prefix = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -160,7 +156,8 @@ dfu_programmer_SOURCES = main.c arguments.c arguments.h atmel.c atmel.h \
                          commands.c commands.h dfu.c dfu.h dfu-bool.h \
                          dfu-device.h intel_hex.c intel_hex.h util.c util.h
 
-all: all-am
+all: config.h
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .o .obj
@@ -194,6 +191,23 @@ $(top_srcdir)/configure: # $(am__configure_deps)
 $(ACLOCAL_M4): # $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+
+config.h: stamp-h1
+	@if test ! -f $@; then \
+	  rm -f stamp-h1; \
+	  $(MAKE) $(AM_MAKEFLAGS) stamp-h1; \
+	else :; fi
+
+stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
+	@rm -f stamp-h1
+	cd $(top_builddir) && $(SHELL) ./config.status src/config.h
+$(srcdir)/config.h.in: # $(am__configure_deps) 
+	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
+	rm -f stamp-h1
+	touch $@
+
+distclean-hdr:
+	-rm -f config.h stamp-h1
 install-binPROGRAMS: $(bin_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
@@ -273,11 +287,11 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+TAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	set x; \
 	here=`pwd`; \
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
 	  done | \
@@ -295,9 +309,9 @@ TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 	  fi; \
 	fi
 ctags: CTAGS
-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+CTAGS:  $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
 	  done | \
@@ -347,7 +361,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(PROGRAMS) config.h
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -385,7 +399,7 @@ distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-tags
+	distclean-hdr distclean-tags
 
 dvi: dvi-am
 
@@ -446,20 +460,20 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS
 
-.MAKE: install-am install-strip
+.MAKE: all install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
 	clean-generic ctags distclean distclean-compile \
-	distclean-generic distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS
+	distclean-generic distclean-hdr distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-binPROGRAMS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

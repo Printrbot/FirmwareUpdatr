@@ -1,7 +1,7 @@
 /*
  * dfu-programmer
  *
- * $Id: dfu.c 93 2010-02-23 10:17:40Z schmidtw $
+ * $Id: dfu.c 159 2013-05-10 14:13:14Z slarge $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,10 @@
 #define USB_CLASS_APP_SPECIFIC  0xfe
 #define DFU_SUBCLASS            0x01
 
-/* Wait for 10 seconds before a timeout since erasing/flashing can take some time. */
-#define DFU_TIMEOUT 10000
+/* Wait for 20 seconds before a timeout since erasing/flashing can take some time.
+ * The longest erase cycle is for the AT32UC3A0512-TA automotive part,
+ * which needs a timeout of at least 19 seconds to erase the whole flash. */
+#define DFU_TIMEOUT 20000
 
 /* Time (in ms) for the device to wait for the usb reset after being told to detach
  * before the giving up going into dfu mode. */
@@ -77,16 +79,19 @@ static int32_t dfu_find_interface( const struct usb_device *device,
                                    const dfu_bool honor_interfaceclass );
 #endif
 static int32_t dfu_make_idle( dfu_device_t *device, const dfu_bool initial_abort );
+
 static int32_t dfu_transfer_out( dfu_device_t *device,
                                  uint8_t request,
                                  const int32_t value,
                                  uint8_t* data,
                                  const size_t length );
+
 static int32_t dfu_transfer_in( dfu_device_t *device,
                                 uint8_t request,
                                 const int32_t value,
                                 uint8_t* data,
                                 const size_t length );
+
 static void dfu_msg_response_output( const char *function, const int32_t result );
 
 /* Allocate an N-byte block of memory from the heap.
@@ -369,6 +374,8 @@ int32_t dfu_abort( dfu_device_t *device )
 #ifdef HAVE_LIBUSB_1_0
 struct libusb_device *dfu_device_init( const uint32_t vendor,
                                        const uint32_t product,
+                                       const uint32_t bus_number,
+                                       const uint32_t device_address,
                                        dfu_device_t *dfu_device,
                                        const dfu_bool initial_abort,
                                        const dfu_bool honor_interfaceclass )
@@ -377,7 +384,7 @@ struct libusb_device *dfu_device_init( const uint32_t vendor,
     size_t i,devicecount;
     extern libusb_context *usbcontext;
     int32_t retries = 4;
-    
+
     TRACE( "%s( %u, %u, %p, %s, %s )\n", __FUNCTION__, vendor, product,
            dfu_device, ((true == initial_abort) ? "true" : "false"),
            ((true == honor_interfaceclass) ? "true" : "false") );
@@ -386,7 +393,7 @@ struct libusb_device *dfu_device_init( const uint32_t vendor,
 
 retry:
     devicecount = libusb_get_device_list( usbcontext, &list );
-    
+
     for( i = 0; i < devicecount; i++ ) {
         libusb_device *device = list[i];
         struct libusb_device_descriptor descriptor;
@@ -395,20 +402,24 @@ retry:
              DEBUG( "Failed in libusb_get_device_descriptor\n" );
              break;
         }
-        
+
         DEBUG( "%2d: 0x%04x, 0x%04x\n", (int) i,
                 descriptor.idVendor, descriptor.idProduct );
 
         if( (vendor  == descriptor.idVendor) &&
-            (product == descriptor.idProduct) )
+            (product == descriptor.idProduct) &&
+            ((bus_number == 0)
+             || ((libusb_get_bus_number(device) == bus_number) &&
+                 (libusb_get_device_address(device) == device_address))) )
         {
             int32_t tmp;
+            DEBUG( "found device at USB:%d,%d\n", libusb_get_bus_number(device), libusb_get_device_address(device) );
             /* We found a device that looks like it matches...
              * let's try to find the DFU interface, open the device
              * and claim it. */
             tmp = dfu_find_interface( device, honor_interfaceclass,
                                       descriptor.bNumConfigurations );
-            
+
             if( 0 <= tmp ) {    /* The interface is valid. */
                 dfu_device->interface = tmp;
 
@@ -457,6 +468,8 @@ retry:
 #else
 struct usb_device *dfu_device_init( const uint32_t vendor,
                                     const uint32_t product,
+                                    const uint32_t bus_number,
+                                    const uint32_t device_address,
                                     dfu_device_t *dfu_device,
                                     const dfu_bool initial_abort,
                                     const dfu_bool honor_interfaceclass )
@@ -479,9 +492,13 @@ retry:
         for( usb_bus = usb_get_busses(); NULL != usb_bus; usb_bus = usb_bus->next ) {
             for( device = usb_bus->devices; NULL != device; device = device->next) {
                 if(    (vendor  == device->descriptor.idVendor)
-                    && (product == device->descriptor.idProduct) )
+                    && (product == device->descriptor.idProduct)
+                    && ((bus_number == 0)
+                        || (device->devnum == device_address
+                            && (usb_bus->location >> 24) == bus_number)))
                 {
                     int32_t tmp;
+                    DEBUG( "found device at USB:%d,%d\n", device->devnum, (usb_bus->location >> 24) );
                     /* We found a device that looks like it matches...
                      * let's try to find the DFU interface, open the device
                      * and claim it. */
@@ -667,7 +684,7 @@ static int32_t dfu_find_interface( struct libusb_device *device,
                                    const uint8_t bNumConfigurations)
 {
     int32_t c,i,s;
-    
+
     TRACE( "%s()\n", __FUNCTION__ );
 
     /* Loop through all of the configurations */
@@ -725,7 +742,7 @@ static int32_t dfu_find_interface( const struct usb_device *device,
     int32_t c, i;
     struct usb_config_descriptor *config;
     struct usb_interface_descriptor *interface;
-    
+
     /* Loop through all of the configurations */
     for( c = 0; c < device->descriptor.bNumConfigurations; c++ ) {
         config = &(device->config[c]);
@@ -923,6 +940,9 @@ static void dfu_msg_response_output( const char *function, const int32_t result 
 #endif
             case -ENODEV:
                 msg = "-ENODEV: Device was removed";
+                break;
+            case -EIO:
+                msg = "-EIO: USB I/O error";
                 break;
 #ifdef EREMOTEIO
             case -EREMOTEIO:

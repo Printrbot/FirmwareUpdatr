@@ -33,8 +33,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/configure \
+	$(srcdir)/Makefile.in $(top_srcdir)/configure \
 	$(top_srcdir)/fedora/dfu-programmer.spec.in AUTHORS COPYING \
 	ChangeLog NEWS m4/depcomp m4/install-sh m4/missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -44,7 +43,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = config.h
+CONFIG_HEADER = $(top_builddir)/src/config.h
 CONFIG_CLEAN_FILES = fedora/dfu-programmer.spec
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
@@ -100,15 +99,15 @@ DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run aclocal-1.11
-AMTAR = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run tar
-AUTOCONF = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoconf
-AUTOHEADER = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoheader
-AUTOMAKE = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run automake-1.11
+ACLOCAL = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run aclocal-1.11
+AMTAR = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run tar
+AUTOCONF = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoconf
+AUTOHEADER = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run autoheader
+AUTOMAKE = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run automake-1.11
 AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -I/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
+CFLAGS = -m32 -mmacosx-version-min=10.5 -I/Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
 CPP = 
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -125,35 +124,30 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS =  -L/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/lib -lusb-1.0
+LDFLAGS = -L/Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/lib/
 LIBOBJS = 
-LIBS = 
-LIBUSB_1_0_CFLAGS = -I/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/include/libusb-1.0
-LIBUSB_1_0_LIBS = -L/Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/lib -lusb-1.0
+LIBS =  -lusb-1.0
 LTLIBOBJS = 
 MAINT = #
-MAKEINFO = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run makeinfo
+MAKEINFO = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/missing --run makeinfo
 MKDIR_P = m4/install-sh -c -d
 OBJEXT = o
 PACKAGE = dfu-programmer
 PACKAGE_BUGREPORT = 
 PACKAGE_NAME = dfu-programmer
-PACKAGE_STRING = dfu-programmer 0.5.2
+PACKAGE_STRING = dfu-programmer 0.6.2
 PACKAGE_TARNAME = dfu-programmer
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.5.2
+PACKAGE_VERSION = 0.6.2
 PATH_SEPARATOR = :
-PKG_CONFIG = /usr/local/bin/pkg-config
-PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = 
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
-VERSION = 0.5.2
-abs_builddir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
-abs_srcdir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
-abs_top_builddir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
-abs_top_srcdir = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+VERSION = 0.6.2
+abs_builddir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+abs_srcdir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+abs_top_builddir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
+abs_top_srcdir = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -172,7 +166,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/install-sh
+install_sh = ${SHELL} /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu/src/dfu-programmer/m4/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -181,7 +175,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(top_builddir)/m4/install-sh -c -d
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /Users/ptelford/git/Printrbot/FirmwareUpdatr/dfu
+prefix = /Users/paul/src/github/Printrbot/FirmwareUpdatr/dfu
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -196,8 +190,7 @@ SUBDIRS = src docs
 EXTRA_DIST = bootstrap.sh fedora/10-dfu-programmer.fdi \
              fedora/dfu-programmer.spec
 
-all: config.h
-	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+all: all-recursive
 
 .SUFFIXES:
 am--refresh:
@@ -234,23 +227,6 @@ $(top_srcdir)/configure: # $(am__configure_deps)
 $(ACLOCAL_M4): # $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-
-config.h: stamp-h1
-	@if test ! -f $@; then \
-	  rm -f stamp-h1; \
-	  $(MAKE) $(AM_MAKEFLAGS) stamp-h1; \
-	else :; fi
-
-stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status config.h
-$(srcdir)/config.h.in: # $(am__configure_deps) 
-	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
-	rm -f stamp-h1
-	touch $@
-
-distclean-hdr:
-	-rm -f config.h stamp-h1
 fedora/dfu-programmer.spec: $(top_builddir)/config.status $(top_srcdir)/fedora/dfu-programmer.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
@@ -334,7 +310,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	mkid -fID $$unique
 tags: TAGS
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	set x; \
 	here=`pwd`; \
@@ -351,7 +327,7 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 	      set "$$@" "$$include_option=$$here/$$subdir/TAGS"; \
 	  fi; \
 	done; \
-	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
 	  done | \
@@ -369,9 +345,9 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
 	  fi; \
 	fi
 ctags: CTAGS
-CTAGS: ctags-recursive $(HEADERS) $(SOURCES) config.h.in $(TAGS_DEPENDENCIES) \
+CTAGS: ctags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
-	list='$(SOURCES) $(HEADERS) config.h.in $(LISP) $(TAGS_FILES)'; \
+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
 	unique=`for i in $$list; do \
 	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
 	  done | \
@@ -566,7 +542,7 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-recursive
-all-am: Makefile config.h
+all-am: Makefile
 installdirs: installdirs-recursive
 installdirs-am:
 install: install-recursive
@@ -601,7 +577,7 @@ clean-am: clean-generic mostlyclean-am
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -f Makefile
-distclean-am: clean-am distclean-generic distclean-hdr distclean-tags
+distclean-am: clean-am distclean-generic distclean-tags
 
 dvi: dvi-recursive
 
@@ -663,21 +639,21 @@ ps-am:
 
 uninstall-am:
 
-.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all \
-	ctags-recursive install-am install-strip tags-recursive
+.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) ctags-recursive \
+	install-am install-strip tags-recursive
 
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am am--refresh check check-am clean clean-generic \
 	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
 	dist-lzma dist-shar dist-tarZ dist-xz dist-zip distcheck \
-	distclean distclean-generic distclean-hdr distclean-tags \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
+	distclean distclean-generic distclean-tags distcleancheck \
+	distdir distuninstallcheck dvi dvi-am html html-am info \
+	info-am install install-am install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
 	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am
 
