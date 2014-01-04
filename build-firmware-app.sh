@@ -16,7 +16,14 @@
 #
 
 PATH_TO_DFU=./dfu/
-VERSION="1.06"
+VERSION="2.0"
 
+if [ ! -e dfu/bin/dfu-programmer ]
+then
+    cd dfu
+    ./build.sh
+    cd ..
+fi
+cp myterm.py dfu/bin/
 /usr/local/bin/platypus -P 'Printrbot Firmware Updater.platypus' -y -f $PATH_TO_DFU -V $VERSION 'Printrbot Firmware Updater.app'
 

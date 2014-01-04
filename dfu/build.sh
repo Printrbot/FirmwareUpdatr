@@ -27,5 +27,8 @@ make
 make install
 make clean
 cd ..
+cd pyserial-2.7
+python setup.py install --prefix="$BUILD_DIR"
+python setup.py clean --all
 
 cd ..
