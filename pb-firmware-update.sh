@@ -3,6 +3,7 @@
 PATH=/bin:/sbin:/usr/bin
 CDL="CocoaDialog.app/Contents/MacOS/CocoaDialog"
 
+DROPPED="$1"
 tempname=`basename $0`
 DL=`mktemp -q "/tmp/${tempname}.XXXXXX"`
 if [ $? -ne 0 ]; then
@@ -16,10 +17,11 @@ fi
 trap on_exit EXIT
 
 function on_exit() { 
-    if [ -z "$1" ]
+    if [ -z "$DROPPED" ]
     then
-        rm -f "$DL" "$CONFIGDL"
+        rm -f "$DL"
     fi
+    rm -f "$CONFIGDL"
 }
 
 function progress_update() {
@@ -38,7 +40,7 @@ function progress_bar() {
 
 function file_dropped() {
     trap - EXIT
-    DL=$1
+    DL="$DROPPED"
     extension=`echo "$DL" | awk -F. '{print $NF}'`
     if [[ "$extension" != "hex" ]]
     then
@@ -170,9 +172,9 @@ function normal_update() {
 }
 
 
-if [ ! -z "$1" ]
+if [ ! -z "$DROPPED" ]
 then
-    file_dropped
+    file_dropped 
 else 
     normal_update
 fi

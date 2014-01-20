@@ -16,7 +16,7 @@
 #
 
 PATH_TO_DFU=./dfu/
-VERSION="2.0"
+VERSION="2.0.1"
 
 if [ ! -e dfu/bin/dfu-programmer ]
 then
