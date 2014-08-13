@@ -121,19 +121,19 @@ function normal_update() {
 
     case ${modelResponse[2]} in
     Junior)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Jr.gcode'
+        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Jr-v1.gcode'
         ;;
     LC/Original)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-LC.gcode'
+        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-LC-v1.gcode'
         ;;
     Plus-v2)
         CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Plus-v2.1.gcode'
         ;;
     Plus-v1)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Plus.gcode'
+        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Plus-1404.gcode'
         ;;
     Simple)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Simple.gcode'
+        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Simple-v1.gcode'
         ;;
     *)
         error_box "An unexpected error occurred" 
