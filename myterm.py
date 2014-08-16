@@ -16,9 +16,9 @@
 
 import sys, os, inspect, threading
 
-cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"dfu/lib/python/serial/")))
+cmd_subfolder = os.path.realpath(os.path.join(inspect.getfile(inspect.currentframe()),"../../lib/python2.7/site-packages/"))
 if cmd_subfolder not in sys.path:
-    sys.path.insert(0, cmd_subfolder)
+    sys.path.append(cmd_subfolder)
 import serial
 
 try:
