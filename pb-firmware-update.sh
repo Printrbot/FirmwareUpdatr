@@ -1,20 +1,33 @@
-#!/bin/sh 
+#!/bin/sh  -x
 
 PATH=/bin:/sbin:/usr/bin
 CDL="CocoaDialog.app/Contents/MacOS/CocoaDialog"
+TMPDIR=${TMPDIR:-/tmp}
 
 DROPPED="$1"
 tempname=`basename $0`
-DL=`mktemp -q "/tmp/${tempname}.XXXXXX"`
+
+# This is the configuration file for the app itself
+export CONFDL=`mktemp -q "${TMPDIR}/${tempname}.conf.XXXXXX"`
+if [ $? -ne 0 ]; then
+    error_box  "Can't create temp config file"
+fi
+
+# This will hold the downloaded firmware file
+DL=`mktemp -q "${TMPDIR}/${tempname}.XXXXXX"`
 if [ $? -ne 0 ]; then
     error_box  "Can't create temp file"
 fi
-export CONFIGDL=`mktemp -q "/tmp/${tempname}.gcode.XXXXXX"`
+
+# The configuration file for the printer
+export CONFIGDL=`mktemp -q "${TMPDIR}/${tempname}.gcode.XXXXXX"`
 if [ $? -ne 0 ]; then
     error_box  "Can't create temp gcode file"
 fi
 
 trap on_exit EXIT
+
+BOTNAMES=()
 
 function on_exit() { 
     if [ -z "$DROPPED" ]
@@ -22,6 +35,7 @@ function on_exit() {
         rm -f "$DL"
     fi
     rm -f "$CONFIGDL"
+    rm -f "$CONFDL"
 }
 
 function progress_update() {
@@ -53,8 +67,30 @@ function curl_download() {
     output=$1
     url=$2
     
-    curl -L -s -o "$output" "$url"
+    curl -L -s -o "$output" "$url" || error_box "Unable to download $url. Please check your internet connectivity."
 }
+
+function get_config() {
+    CONFIGURL="https://raw.githubusercontent.com/Printrbot/FirmwareUpdatr/master/Updatr.conf"
+    
+    curl_download "$CONFDL" "$CONFIGURL"
+    while read line
+    do
+        # Read the config file one line at a time.  The first field is added to
+        # an array to build the list of possible machines that the user will choose
+        # Lines starting with a '#' are ignored
+        IFS=';' read -a confLine <<< "$line"
+        if [ ${line:0:1} == '#' ]
+        then
+            continue
+        fi
+        name="${confLine[0]}"
+        # Convert spaces to underscores to make the quoting requirements less onerous later
+        name=${name// /_}
+        BOTNAMES+=($name)
+    done < "$CONFDL"
+}
+
 
 function error_box() {
     msg="$1"
@@ -75,6 +111,18 @@ function warning_box() {
     msg="$2"
 
     $CDL ok-msgbox --icon hazard --text "$title" --informative-text "$msg"
+}
+
+function determine_config() {
+    model="$1"
+
+    grep "^$model;" "$CONFDL" | cut -d';' -f3
+}
+
+function determine_firmware() {
+    model="$1"
+
+    grep "^$model;" "$CONFDL" | cut -d';' -f2
 }
 
 function write_eeprom() {
@@ -110,38 +158,23 @@ function normal_update() {
 
     progress_bar 10
 
+    echo "Getting configuration file"
+    get_config
     echo "Checking printer type"
     declare -a modelResponse
-    modelResponse=(`$CDL standard-dropdown --icon gear --string-output --title "Printer Type" --text "Please select the model of your printer" --items "Printrbot Junior" "Printrbot LC/Original" "Printrbot Plus-v2" "Printrbot Plus-v1" "Printrbot Simple" | tr '\n' ' '`)
+
+    # The model list is built based on the existing array, with underscores converted back to spaces
+    modelResponse=(`$CDL standard-dropdown --icon gear --string-output --title "Printer Type" --text "Please select the model of your printer" --items "${BOTNAMES[@]//_/ }" | tr '\n' ' '`)
+    model="${modelResponse[@]:1}"
 
     if [[ "${modelResponse[0]}" == "Cancel" ]]
     then
         exit
     fi
 
-    case ${modelResponse[2]} in
-    Junior)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Jr-v1.gcode'
-        ;;
-    LC/Original)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-LC-v1.gcode'
-        ;;
-    Plus-v2)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Plus-v2.1.gcode'
-        ;;
-    Plus-v1)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Plus-1404.gcode'
-        ;;
-    Simple)
-        CONFIG='https://raw.github.com/Printrbot/Printr-Configs/master/Config-Simple-v1.gcode'
-        ;;
-    *)
-        error_box "An unexpected error occurred" 
-        ;;
-    esac
-    # These tiny.cc URLs can be updated to always point at the latest firmware on github
-    URL='http://tiny.cc/printrbot-marlin-unified'
-    MD5URL='http://tiny.cc/printrbot-unified-md5'
+    CONFIG=`determine_config "${model}"`
+    URL=`determine_firmware "${model}"`
+    MD5URL="$URL.md5"
 
     progress_bar 20
 
